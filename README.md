@@ -1,29 +1,29 @@
 # lumen-minesweeper
 
-The Minesweeper game for **AspisOS**, a capability-based, no-ambient-authority
+The Minesweeper game for **LoricaOS**, a capability-based, no-ambient-authority
 x86-64 operating system built on the from-scratch
-[Aegis](https://github.com/AspisOS/Aegis) kernel.
+[Aegis](https://github.com/LoricaOS/Aegis) kernel.
 
 minesweeper is the classic mine-hunting game: a 9x9 covered grid hiding 10
 mines, left-click to reveal, right-click to flag, with flood-fill on empty
 cells and first-click safety. It is a leaf component of the Lumen desktop,
-distributed as a [herald](https://github.com/AspisOS/AspisOS) package, and runs
-as an **external client** of the [lumen](https://github.com/AspisOS/lumen)
+distributed as a [herald](https://github.com/LoricaOS/LoricaOS) package, and runs
+as an **external client** of the [lumen](https://github.com/LoricaOS/lumen)
 compositor — it connects to `/run/lumen.sock` over the Lumen window protocol and
 is handed a shared-memory buffer to draw into, rather than being an in-process
 compositor built-in.
 
 ## Where minesweeper fits
 
-AspisOS is decomposed into independent repositories. minesweeper sits at the
+LoricaOS is decomposed into independent repositories. minesweeper sits at the
 leaf of the graphical stack:
 
 | Repo | Role |
 |------|------|
-| [`AspisOS/Aegis`](https://github.com/AspisOS/Aegis) | The kernel: capability model, `AF_UNIX` sockets, `memfd`, the syscalls the desktop runs on. |
-| [`AspisOS/lumen`](https://github.com/AspisOS/lumen) | The compositor / display server. Owns the framebuffer; every GUI app is one of its clients. |
-| [`AspisOS/glyph`](https://github.com/AspisOS/glyph) | The GUI toolkit minesweeper links against: the software renderer (`draw_*`, `font_*`), theme/accent values, and the client side of the Lumen protocol (`lumen_client.h`). |
-| `AspisOS/lumen-minesweeper` | **This repo.** The minesweeper app. |
+| [`LoricaOS/Aegis`](https://github.com/LoricaOS/Aegis) | The kernel: capability model, `AF_UNIX` sockets, `memfd`, the syscalls the desktop runs on. |
+| [`LoricaOS/lumen`](https://github.com/LoricaOS/lumen) | The compositor / display server. Owns the framebuffer; every GUI app is one of its clients. |
+| [`LoricaOS/glyph`](https://github.com/LoricaOS/glyph) | The GUI toolkit minesweeper links against: the software renderer (`draw_*`, `font_*`), theme/accent values, and the client side of the Lumen protocol (`lumen_client.h`). |
+| `LoricaOS/lumen-minesweeper` | **This repo.** The minesweeper app. |
 
 ## What it does
 
@@ -62,7 +62,7 @@ Grounded in `src/main.c`:
 
 ## Capabilities
 
-AspisOS grants a process no ambient authority; it can touch the system only
+LoricaOS grants a process no ambient authority; it can touch the system only
 through capabilities declared for it at exec time. minesweeper's policy
 (`pkg/etc/aegis/caps.d/minesweeper`) is the baseline:
 
@@ -78,13 +78,13 @@ socket.
 
 minesweeper is intentionally small: a single, fixed Beginner board (9x9, 10
 mines). It is early-stage and could grow (selectable difficulty / board sizes, a
-game timer, chord-clicking) as AspisOS matures. What ships today is complete and
+game timer, chord-clicking) as LoricaOS matures. What ships today is complete and
 honest about its scope rather than feature-padded.
 
 ## Building
 
 minesweeper builds with a musl cross-compiler against a **pinned**
-[glyph](https://github.com/AspisOS/glyph) toolkit artifact (the GUI libraries it
+[glyph](https://github.com/LoricaOS/glyph) toolkit artifact (the GUI libraries it
 links), then packs a signed herald package.
 
 ```sh
@@ -131,6 +131,6 @@ GLYPH_VERSION   the pinned glyph toolkit version it builds against
 ## Dependencies
 
 `depends=lumen` — minesweeper is an external client of the compositor, so
-installing it pulls [lumen](https://github.com/AspisOS/lumen). lumen also ships
+installing it pulls [lumen](https://github.com/LoricaOS/lumen). lumen also ships
 the desktop fonts (Inter, JetBrains Mono), so minesweeper inherits them
 transitively; there is no separate font package.
